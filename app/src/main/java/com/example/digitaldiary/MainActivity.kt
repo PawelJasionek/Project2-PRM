@@ -12,11 +12,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.digitaldiary.ui.theme.DigitalDiaryTheme
+import com.google.firebase.FirebaseApp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        FirebaseApp.initializeApp(this);
         setContent {
             DigitalDiaryTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -29,7 +31,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
+//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
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
