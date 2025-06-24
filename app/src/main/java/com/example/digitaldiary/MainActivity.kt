@@ -17,33 +17,8 @@ import com.google.firebase.FirebaseApp
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        FirebaseApp.initializeApp(this);
         setContent {
-            DigitalDiaryTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+            DiaryApp()
         }
-    }
-}
-//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
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    DigitalDiaryTheme {
-        Greeting("Android")
     }
 }

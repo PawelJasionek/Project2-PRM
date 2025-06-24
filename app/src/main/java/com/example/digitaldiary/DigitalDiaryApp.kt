@@ -1,4 +1,10 @@
 package com.example.digitaldiary
 
-class DigitalDiaryApp {
+@Composable
+fun DigitalDiaryApp() {
+    val navController = rememberNavController()
+
+    MaterialTheme {
+        NavGraph(navController = navController)
+    }
 }

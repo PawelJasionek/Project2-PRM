@@ -25,6 +25,8 @@ class FirebaseRepository {
         timestamp = System.currentTimeMillis()
     )
 
+
+
     fun addEntry(diary: DiaryEntry){
             diaries.document(sampleEntry.id).set(diary)
                 .addOnSuccessListener {
@@ -35,23 +37,47 @@ class FirebaseRepository {
                 }
     }
 
-    fun getEntry(id: String){
+    fun getEntry(id: String, onResult:(DiaryEntry?) -> Unit ){
         diaries.document(id)
             .get()
             .addOnSuccessListener { doc ->
                 if(doc != null){
                     val diary = doc.toObject<DiaryEntry>()
-                    Log.d(TAG, "Fetched data: ${doc.data}")
+                    Log.d(TAG, "Fetching data successful")
+                    onResult(diary)
                 }else{
                     Log.d(TAG, "Fetching data unsuccessful")
+                    onResult(null)
                 }
             }
     }
 
-    fun getAllEntries(){
-        diaries.get()
-            .addOnSuccessListener {  }
 
-        return
+
+    fun getEntryById(id: String, onResult: (DiaryEntry?) -> Unit) {
+        diaries.document(id).get()
+            .addOnSuccessListener { doc ->
+                val diary = doc.toObject<DiaryEntry>()
+                onResult(diary)
+            }
+            .addOnFailureListener {
+                Log.e(TAG, "Error fetching diary", it)
+                onResult(null)
+            }
     }
+
+    fun getAllEntries(): Flow<List<DiaryEntry>> = callbackFlow {
+        val listener = diaries.addSnapshotListener { snapshot, error ->
+            if (error != null) {
+                Log.e(TAG, "Listen failed.", error)
+                return@addSnapshotListener
+            }
+
+            val entries = snapshot?.documents?.mapNotNull { it.toObject(DiaryEntry::class.java) }
+            trySend(entries ?: emptyList())
+        }
+
+        awaitClose { listener.remove() }
+    }
+
 }
