@@ -1,3 +1,44 @@
 <resources>
-    <string name="app_name">DigitalDiary</string>
+    <!-- App -->
+    <string name="app_name">Digital Diary</string>
+
+    <!-- LockScreen -->
+    <string name="pin_title_new">Set your PIN</string>
+    <string name="pin_title_enter">Enter your PIN</string>
+    <string name="pin_label">PIN</string>
+    <string name="pin_confirm_label">Confirm PIN</string>
+    <string name="pin_save_button">Save PIN</string>
+    <string name="pin_unlock_button">Unlock</string>
+    <string name="pin_saved">PIN saved</string>
+    <string name="pin_incorrect">Incorrect PIN</string>
+    <string name="pin_mismatch">PINs do not match</string>
+    <string name="pin_too_short">PIN too short</string>
+
+    <!-- Entry screen -->
+    <string name="cancel">CANCEL</string>
+    <string name="new_entry">New entry</string>
+
+    <string name="title_label">Title</string>
+    <string name="content_label">Content</string>
+    <string name="location_label">📍 Location:</string>
+
+    <string name="choose_photo">Choose a photo from galery</string>
+    <string name="add_text_label">Tekst do dodania</string>
+    <string name="photo_description">Chosen photo</string>
+
+    <string name="start_recording">🎙️ Start recording</string>
+    <string name="stop_recording">⏹️ Stop</string>
+    <string name="recording_saved">✅ Recording saved</string>
+
+    <string name="save_button">Save</string>
+
+    <!-- Map -->
+    <string name="map_screen_title">Map of Entries</string>
+
+    <!-- Notifications -->
+    <string name="notification_geofence_triggered">You\'re near a diary location!</string>
+
+    <!-- Error messages -->
+    <string name="error_location_permission">Location permission not granted</string>
+    <string name="error_audio_permission">Audio permission not granted</string>
 </resources>

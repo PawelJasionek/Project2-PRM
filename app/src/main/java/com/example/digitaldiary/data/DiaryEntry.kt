@@ -3,7 +3,7 @@ package com.example.digitaldiary.data
 import java.util.UUID
 
 
-class DiaryEntry(
+data class DiaryEntry(
     val id: String = UUID.randomUUID().toString(),
     val title: String= "",
     val content: String = "",

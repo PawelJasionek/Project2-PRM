@@ -5,30 +5,93 @@ import android.util.Log
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import java.util.UUID
 
 class FirebaseRepository {
 
-    val db = Firebase.firestore
+    private val db = Firebase.firestore
 
-    val diaries = db.collection("diaries")
+    private val diaries = db.collection("diaries")
 
-    val sampleEntry = DiaryEntry(
-        id = UUID.randomUUID().toString(),
-        title = "Spacer nad jeziorem",
-        content = "Dzisiaj poszedłem na długi spacer nad jeziorem. Było spokojnie i relaksująco.",
-        locationName = "Männedorf",
-        latitude = 47.2567,
-        longitude = 8.6931,
-        imageUrl = null,
-        audioUrl = null,
-        timestamp = System.currentTimeMillis()
-    )
+
+    fun addSampleEntries(){
+        diaries.get()
+            .addOnSuccessListener { snapshot ->
+                if(snapshot.isEmpty){
+                    val sampleEntries = listOf(
+                        DiaryEntry(
+                            id = UUID.randomUUID().toString(),
+                            title = "Spacer w Zurichu",
+                            content = "Byłem dziś w Zurichu, piękne widoki!",
+                            locationName = "Zurich",
+                            latitude = 47.3769,
+                            longitude = 8.5417,
+                            imageUrl = "https://picsum.photos/id/1015/600/400",
+                            audioUrl = null,
+                            timestamp = System.currentTimeMillis()
+                        ),
+                        DiaryEntry(
+                            id = UUID.randomUUID().toString(),
+                            title = "Kawa nad jeziorem",
+                            content = "Relaks z widokiem na wodę",
+                            locationName = "Männedorf",
+                            latitude = 47.2567,
+                            longitude = 8.6931,
+                            imageUrl = "https://picsum.photos/id/1016/600/400",
+                            audioUrl = null,
+                            timestamp = System.currentTimeMillis()
+                        ),
+                        DiaryEntry(
+                            id = UUID.randomUUID().toString(),
+                            title = "Spacer po lesie",
+                            content = "Wyciszenie i spokój wśród drzew.",
+                            locationName = "Pfannenstiel",
+                            latitude = 47.3172,
+                            longitude = 8.6847,
+                            imageUrl = "https://picsum.photos/id/1020/600/400",
+                            audioUrl = null,
+                            timestamp = System.currentTimeMillis()
+                        ),
+                        DiaryEntry(
+                            id = UUID.randomUUID().toString(),
+                            title = "Wieczorny zachód słońca",
+                            content = "Piękne kolory nad Männedorf. Udało mi się zrobić świetne zdjęcie!",
+                            locationName = "Männedorf",
+                            latitude = 47.2567,
+                            longitude = 8.6931,
+                            imageUrl = "https://picsum.photos/id/1024/600/400",
+                            audioUrl = null,
+                            timestamp = System.currentTimeMillis()
+                        ),
+                        DiaryEntry(
+                            id = UUID.randomUUID().toString(),
+                            title = "Weekend w górach",
+                            content = "Wycieczka do Alp, trochę wspinaczki i dużo zdjęć!",
+                            locationName = "Zermatt",
+                            latitude = 46.0207,
+                            longitude = 7.7491,
+                            imageUrl = "https://picsum.photos/id/1035/600/400",
+                            audioUrl = null,
+                            timestamp = System.currentTimeMillis()
+                        )
+                    )
+                    sampleEntries.forEach {
+                        diaries.document(it.id).set(it)
+                    }
+                    Log.d(TAG, "Example data added")
+                }else {
+                    Log.d(TAG, "Database is not empty")
+                }
+            }
+    }
 
 
 
     fun addEntry(diary: DiaryEntry){
-            diaries.document(sampleEntry.id).set(diary)
+            diaries.document(diary.id).set(diary)
                 .addOnSuccessListener {
                         Log.d(TAG, "Adding Diary succesful")
 
@@ -51,8 +114,6 @@ class FirebaseRepository {
                 }
             }
     }
-
-
 
     fun getEntryById(id: String, onResult: (DiaryEntry?) -> Unit) {
         diaries.document(id).get()
@@ -78,6 +139,16 @@ class FirebaseRepository {
         }
 
         awaitClose { listener.remove() }
+    }
+
+    fun updateEntry(diaryEntry: DiaryEntry){
+        diaries.document(diaryEntry.id).set(diaryEntry)
+            .addOnSuccessListener{
+                Log.e(TAG, "Diary update successful")
+            }
+            .addOnFailureListener {
+                Log.e(TAG, "Failed updating diary")
+            }
     }
 
 }
